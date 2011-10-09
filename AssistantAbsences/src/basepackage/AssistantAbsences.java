@@ -35,7 +35,7 @@ public BaseInspector   bpe   ;public ListRendering  rendererL   ;public int user
                 public void run() {
                    
                   if(    !testConnection(    )   )  {  //entez des  donnes db   à la main  
-              bpe.ident   =  "lardino"     ; bpe.passwd = "bibiocap"     ; bpe.dbname    =   "gepigit"    ;     
+             
                   }
                 
                     initComponents();initAll(  )    ;
@@ -49,10 +49,7 @@ public BaseInspector   bpe   ;public ListRendering  rendererL   ;public int user
         }
     }
     
-    
- 
- 
-    
+      
         
   
     
@@ -61,36 +58,41 @@ public BaseInspector   bpe   ;public ListRendering  rendererL   ;public int user
     bpe  = new  BaseInspector(  )   ; 
           Vector result  = new Vector( )   ;
         try {
- String path  =   this.getCodeBase( )  +"connect.inc.php"  ; System.out.println ( path   )   ;
-   URL  ur = new URL ( path    );
+ String path  =   this.getCodeBase( )  +"connect.inc.txt"  ; //System.out.println ( path   )   ;
+
+            URL  ur = new URL ( path    );
   URLConnection   urt = ur.openConnection ();
  urt.setDoInput ( true ) ;
-urt.setUseCaches( false ) ;
- BufferedReader   brd  = new BufferedReader ( new InputStreamReader(urt.getInputStream()));
-            
+
+ BufferedReader   brd  = new BufferedReader ( new InputStreamReader(ur.openStream() ));
+ 
             String line  ; int  index1  ,  index2    ;
+            line     = brd.readLine()     ; 
              
             while ( (line=brd.readLine())!= null ) {
+                System.out.println (  "line       :"+line  )    ; 
            index1  = line.indexOf("$dbDb"  ,  0  )      ;
            if( index1 !=-1  )    { 
                             index2  = line.indexOf("="  ,  index1+1   )      ;
-           dbname     =  line.substring(  index2+1  ,   line.length()   )   ;
+           dbname     =  returnChamp( line.substring(  index2+1  ,   line.length()   )     )  ; 
            }
             index1  = line.indexOf("$dbUser"  ,  0  )      ;
            if( index1 !=-1  )    { 
                             index2  = line.indexOf("="  ,  index1+1   )      ;
-          ident      =  line.substring(  index2+1  ,   line.length()   )   ;
+          ident      =  returnChamp( line.substring(  index2+1  ,   line.length()   )     )  ; 
            }
            
                         index1  = line.indexOf("$dbPass"  ,  0  )      ;
            if( index1 !=-1  )    { 
                             index2  = line.indexOf("="  ,  index1+1   )      ;
-          passwd      =  line.substring(  index2+1  ,   line.length()   )   ;
+          passwd      =       returnChamp( line.substring(  index2+1  ,   line.length()   )     )  ; 
+
            }
                             
                 
             }
             brd.close( ) ;
+            
      if(    bpe.testConnection(ident, passwd, dbname, 3306  )    )   {
       bpe.ident   = ident  ;   bpe.passwd   = passwd   ; bpe.dbname   = dbname    ;      
               return true    ;  
@@ -98,6 +100,11 @@ urt.setUseCaches( false ) ;
         }catch (IOException e ) {System.out.println(e ) ; return false     ; }
       return false  ; 
      }
+     
+       public String  returnChamp(  String  val )     {
+           int index1      = val.indexOf("\"")   ; int index2      = val.indexOf("\""  , index1+1 )   ; 
+           return  val.substring(   index1 +1  , index2  )    ; 
+       }
     
      public void initAll(  ) {
      anneeI   =  new int[2]   ; anneeI[0]  = 2011   ;   anneeI[1]  = 2012   ;
