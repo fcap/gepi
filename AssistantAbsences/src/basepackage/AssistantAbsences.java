@@ -169,7 +169,7 @@ if(  dt.after(  gcd1.getTime( )    )  )  { ok  =  false     ;}
 
 
       }
-    //  int pos     =    gcd.get(Calendar.MONDAY      )    ;
+   
     System.out.println (  "monday :" +gcd.getTime(   )    )      ;  
      System.out.println (  "friday:" +gcd.getTime(   )    )  ;
  }
@@ -195,7 +195,7 @@ for ( int s  = 0  ; s<monthL.size()   ;s++)  {
      gcd.add( Calendar.WEEK_OF_MONTH , 1 )     ;
      position      =   gcd.get(   Calendar.MONTH   )  ;System.out.println(  "mois position :"+pos )    ;
     }
-      //System.out.println( "Week :"+   gcd.getTime()   )     ;
+     
   }
       
        public  void  setMonthHolyday( Month  mth    ,   GregorianCalendar  gcd      )   {
